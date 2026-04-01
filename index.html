@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Divya Rahul Shah — Biomedical AI Researcher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #050a0f;
+  --bg2: #0c1520;
+  --bg3: #111d2a;
+  --accent: #00d4aa;
+  --accent2: #0066ff;
+  --accent3: #ff4d6d;
+  --text: #e8f4f0;
+  --muted: #6a8fa8;
+  --border: rgba(0,212,170,0.15);
+  --card: rgba(12,21,32,0.95);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9999;
+  transition: transform 0.15s ease;
+}
+.cursor-ring {
+  width: 32px; height: 32px;
+  border: 1px solid rgba(0,212,170,0.4);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9998;
+  transition: transform 0.08s ease, width 0.2s, height 0.2s;
+}
+
+/* NOISE OVERLAY */
+body::before {
+  content: '';
+  position: fixed; top:0; left:0; width:100%; height:100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1; opacity: 0.5;
+}
+
+/* AMBIENT ORBS */
+.orb {
+  position: fixed; border-radius: 50%;
+  filter: blur(140px); pointer-events: none; z-index: 0;
+}
+.orb1 { width:600px;height:600px;background:rgba(0,212,170,0.05);top:-150px;right:-150px; }
+.orb2 { width:500px;height:500px;background:rgba(0,102,255,0.05);bottom:-100px;left:-150px; }
+.orb3 { width:300px;height:300px;background:rgba(255,77,109,0.04);top:50%;left:50%;transform:translate(-50%,-50%); }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 3rem;
+  background: rgba(5,10,15,0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid rgba(0,212,170,0.1);
+}
+.nav-logo {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px; color: var(--accent);
+  letter-spacing: 0.08em; text-decoration: none;
+}
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  color: var(--muted); text-decoration: none;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--accent); }
+
+/* SECTIONS */
+section {
+  position: relative; z-index: 2;
+  max-width: 1000px; margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding-top: 80px;
+  max-width: 1000px; margin: 0 auto; padding-left: 2rem; padding-right: 2rem;
+}
+
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  color: var(--accent); letter-spacing: 0.12em;
+  margin-bottom: 1.5rem;
+  opacity: 0; animation: fadeUp 0.6s 0.2s forwards;
+}
+.hero-eyebrow::before {
+  content: ''; width: 32px; height: 1px; background: var(--accent);
+}
+
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-weight: 800; line-height: 1.0;
+  color: var(--text); margin-bottom: 1.5rem;
+  opacity: 0; animation: fadeUp 0.7s 0.35s forwards;
+}
+.hero h1 .accent { color: var(--accent); }
+.hero h1 .dim { color: var(--muted); font-weight: 400; }
+
+.hero-desc {
+  font-size: 16px; color: var(--muted); line-height: 1.8;
+  max-width: 560px; font-weight: 300; margin-bottom: 2.5rem;
+  opacity: 0; animation: fadeUp 0.7s 0.5s forwards;
+}
+
+.hero-cta {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp 0.7s 0.65s forwards;
+}
+.btn-primary {
+  font-family: 'DM Mono', monospace; font-size: 12px;
+  padding: 12px 28px; border-radius: 8px;
+  background: var(--accent); color: #050a0f;
+  text-decoration: none; font-weight: 500;
+  letter-spacing: 0.05em; transition: opacity 0.2s, transform 0.2s;
+}
+.btn-primary:hover { opacity: 0.85; transform: translateY(-2px); }
+.btn-outline {
+  font-family: 'DM Mono', monospace; font-size: 12px;
+  padding: 12px 28px; border-radius: 8px;
+  border: 0.5px solid rgba(0,212,170,0.3); color: var(--accent);
+  text-decoration: none; letter-spacing: 0.05em;
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-outline:hover { background: rgba(0,212,170,0.06); transform: translateY(-2px); }
+
+.hero-stats {
+  display: flex; gap: 3rem; margin-top: 4rem;
+  border-top: 0.5px solid rgba(255,255,255,0.05);
+  padding-top: 2rem; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp 0.7s 0.8s forwards;
+}
+.hero-stat-val {
+  font-family: 'Syne', sans-serif; font-size: 2rem;
+  font-weight: 800; color: var(--text);
+}
+.hero-stat-val span { color: var(--accent); }
+.hero-stat-label {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--muted); letter-spacing: 0.1em; margin-top: 4px;
+}
+
+/* SCROLL INDICATOR */
+.scroll-hint {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--muted); letter-spacing: 0.1em;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  animation: pulse 2s infinite;
+}
+.scroll-line {
+  width: 1px; height: 40px; background: linear-gradient(to bottom, var(--accent), transparent);
+}
+
+/* SECTION HEADER */
+.section-wrap {
+  position: relative; z-index: 2;
+  max-width: 1000px; margin: 0 auto;
+  padding: 6rem 2rem;
+}
+.section-label {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--accent); letter-spacing: 0.15em;
+  margin-bottom: 0.8rem; display: flex; align-items: center; gap: 10px;
+}
+.section-label::after { content:''; flex:1; height:0.5px; background:rgba(0,212,170,0.15); max-width: 60px; }
+.section-title {
+  font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800; color: var(--text); margin-bottom: 3rem;
+}
+
+/* ABOUT */
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 3rem; align-items: start;
+}
+.about-text p {
+  font-size: 15px; color: var(--muted); line-height: 1.8;
+  font-weight: 300; margin-bottom: 1.2rem;
+}
+.about-text p strong { color: var(--text); font-weight: 500; }
+
+.info-card {
+  background: var(--card); border: 0.5px solid var(--border);
+  border-radius: 16px; padding: 1.5rem;
+}
+.info-row {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 10px 0; border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  gap: 1rem;
+}
+.info-row:last-child { border-bottom: none; }
+.info-key { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.08em; flex-shrink: 0; }
+.info-val { font-size: 13px; color: var(--text); text-align: right; }
+.info-val a { color: var(--accent); text-decoration: none; }
+.info-val a:hover { text-decoration: underline; }
+
+/* PROJECTS */
+.projects-grid { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.proj-card {
+  background: var(--card); border: 0.5px solid rgba(0,212,170,0.12);
+  border-radius: 16px; padding: 2rem;
+  position: relative; overflow: hidden;
+  transition: border-color 0.3s, transform 0.25s;
+  text-decoration: none; display: block;
+}
+.proj-card:hover { border-color: rgba(0,212,170,0.4); transform: translateX(6px); }
+
+.proj-accent {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; border-radius: 3px 0 0 3px;
+}
+.pa-teal { background: var(--accent); }
+.pa-blue { background: var(--accent2); }
+.pa-red  { background: var(--accent3); }
+
+.proj-inner { padding-left: 1rem; }
+.proj-num {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--muted); letter-spacing: 0.12em; margin-bottom: 6px;
+}
+.proj-title {
+  font-family: 'Syne', sans-serif; font-size: 1.25rem;
+  font-weight: 700; color: var(--text); margin-bottom: 4px;
+}
+.proj-sub {
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  color: var(--accent); margin-bottom: 0.8rem; letter-spacing: 0.03em;
+}
+.proj-desc {
+  font-size: 13px; color: var(--muted); line-height: 1.7;
+  font-weight: 300; margin-bottom: 1.2rem;
+}
+.proj-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.2rem; }
+.tag {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  padding: 3px 10px; border-radius: 100px;
+  border: 0.5px solid; letter-spacing: 0.04em;
+}
+.tg { color: var(--accent); border-color: rgba(0,212,170,0.3); background: rgba(0,212,170,0.06); }
+.tb { color: #5599ff; border-color: rgba(0,102,255,0.3); background: rgba(0,102,255,0.06); }
+.tr { color: #ff6b80; border-color: rgba(255,77,109,0.3); background: rgba(255,77,109,0.06); }
+
+.proj-metrics {
+  display: flex; gap: 1.5rem; flex-wrap: wrap;
+  padding-top: 1rem; border-top: 0.5px solid rgba(255,255,255,0.05);
+}
+.pm { }
+.pm-val {
+  font-family: 'DM Mono', monospace; font-size: 16px;
+  color: var(--text); font-weight: 400;
+}
+.pm-label { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+.proj-link {
+  position: absolute; top: 1.5rem; right: 1.5rem;
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  color: var(--accent); text-decoration: none;
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 12px; border: 0.5px solid rgba(0,212,170,0.2);
+  border-radius: 6px; transition: background 0.2s;
+}
+.proj-link:hover { background: rgba(0,212,170,0.08); }
+
+/* SKILLS */
+.skills-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+.skill-card {
+  background: var(--card); border: 0.5px solid rgba(255,255,255,0.06);
+  border-radius: 12px; padding: 1.25rem;
+}
+.skill-category {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.8rem;
+}
+.skill-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.skill-pill {
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  color: var(--muted); background: rgba(255,255,255,0.03);
+  border: 0.5px solid rgba(255,255,255,0.07);
+  border-radius: 6px; padding: 4px 10px;
+}
+
+/* EDUCATION */
+.edu-card {
+  background: var(--card); border: 0.5px solid rgba(255,255,255,0.06);
+  border-radius: 16px; overflow: hidden;
+}
+.edu-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 160px 100px;
+  gap: 1rem; align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  transition: background 0.2s;
+}
+.edu-row:last-child { border-bottom: none; }
+.edu-row:hover { background: rgba(255,255,255,0.02); }
+.edu-row.header {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--muted); letter-spacing: 0.08em;
+  background: rgba(0,212,170,0.03);
+}
+.edu-degree { font-size: 13px; font-weight: 500; color: var(--text); }
+.edu-spec { font-size: 12px; color: var(--muted); }
+.edu-inst { font-size: 13px; color: var(--text); }
+.edu-year { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); }
+.edu-cpi {
+  font-family: 'DM Mono', monospace; font-size: 14px;
+  color: var(--accent); font-weight: 500; text-align: right;
+}
+
+/* CONTACT */
+.contact-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+}
+.contact-card {
+  background: var(--card); border: 0.5px solid rgba(255,255,255,0.06);
+  border-radius: 12px; padding: 1.25rem 1.5rem;
+  text-decoration: none; display: flex; align-items: center; gap: 1rem;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.contact-card:hover { border-color: rgba(0,212,170,0.3); transform: translateY(-2px); }
+.contact-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: rgba(0,212,170,0.08); border: 0.5px solid rgba(0,212,170,0.2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.contact-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.08em; }
+.contact-val { font-size: 13px; color: var(--text); margin-top: 2px; }
+
+/* FOOTER */
+footer {
+  position: relative; z-index: 2;
+  text-align: center; padding: 3rem 2rem;
+  border-top: 0.5px solid rgba(255,255,255,0.05);
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  color: var(--muted); letter-spacing: 0.06em;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%,100% { opacity: 0.4; } 50% { opacity: 1; }
+}
+
+.reveal {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: rgba(0,212,170,0.2); border-radius: 2px; }
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .about-grid { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .edu-row { grid-template-columns: 1fr 1fr; }
+  .edu-row.header .edu-spec,
+  .edu-row .edu-spec { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">DRS.DEV</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div style="position:relative;z-index:2;">
+<div class="hero">
+  <div class="hero-eyebrow">IIT GANDHINAGAR · MECHANICAL ENGINEERING · 2025</div>
+  <h1>
+    Divya<br>
+    Rahul <span class="accent">Shah</span><br>
+    <span class="dim" style="font-size:0.55em;">Biomedical AI Researcher</span>
+  </h1>
+  <p class="hero-desc">
+    First-year undergraduate exploring the intersection of AI alignment and healthcare.
+    Building compact, safe, and steerable models for high-stakes clinical environments.
+  </p>
+  <div class="hero-cta">
+    <a class="btn-primary" href="#projects">View Projects</a>
+    <a class="btn-outline" href="https://github.com/shahdivya-lab" target="_blank">GitHub →</a>
+    <a class="btn-outline" href="mailto:shah.divya@iitgn.ac.in">Contact Me</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="hero-stat-val">3<span>+</span></div>
+      <div class="hero-stat-label">AI PROJECTS</div>
+    </div>
+    <div>
+      <div class="hero-stat-val">8.0<span>/10</span></div>
+      <div class="hero-stat-label">CURRENT CPI</div>
+    </div>
+    <div>
+      <div class="hero-stat-val">94<span>%</span></div>
+      <div class="hero-stat-label">SAFETY RATE · MEDSAFE-LLM</div>
+    </div>
+    <div>
+      <div class="hero-stat-val">3<span>x</span></div>
+      <div class="hero-stat-label">GITHUB REPOS</div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    SCROLL
+  </div>
+</div>
+</div>
+
+<!-- ABOUT -->
+<div class="section-wrap" id="about">
+  <div class="section-label">01 — ABOUT</div>
+  <div class="section-title reveal">Who I Am</div>
+  <div class="about-grid reveal">
+    <div class="about-text">
+      <p>
+        I'm <strong>Divya Rahul Shah</strong>, a first-year B.Tech student in
+        Mechanical Engineering at <strong>IIT Gandhinagar</strong>. My passion
+        lies at the intersection of <strong>AI alignment and biomedical systems</strong>
+        — building AI that is not just capable, but safe, steerable, and
+        trustworthy in high-stakes clinical environments.
+      </p>
+      <p>
+        I independently study and implement alignment research papers —
+        from <strong>DPO</strong> and <strong>Constitutional AI</strong> to
+        <strong>LoRA fine-tuning</strong> and <strong>uncertainty quantification</strong>
+        — driven by the belief that compact models with proper alignment
+        can be as safe as models ten times their size.
+      </p>
+      <p>
+        Currently applying for research internships in AI alignment,
+        with a focus on <strong>Biomedical AI</strong> and
+        <strong>domain-specific SLM alignment</strong>.
+      </p>
+    </div>
+    <div class="info-card">
+      <div class="info-row">
+        <span class="info-key">NAME</span>
+        <span class="info-val">Divya Rahul Shah</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">INSTITUTE</span>
+        <span class="info-val">IIT Gandhinagar</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">BRANCH</span>
+        <span class="info-val">Mechanical Engineering</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">BATCH</span>
+        <span class="info-val">2025 – Present</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">CPI</span>
+        <span class="info-val">8.0 / 10</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">EMAIL</span>
+        <span class="info-val"><a href="mailto:shah.divya@iitgn.ac.in">shah.divya@iitgn.ac.in</a></span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">GITHUB</span>
+        <span class="info-val"><a href="https://github.com/shahdivya-lab" target="_blank">shahdivya-lab</a></span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">LINKEDIN</span>
+        <span class="info-val"><a href="https://www.linkedin.com/in/divya-shah-51112036a/" target="_blank">divya-shah</a></span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">FOCUS</span>
+        <span class="info-val">Biomedical AI · Alignment</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<div class="section-wrap" id="projects">
+  <div class="section-label">02 — PROJECTS</div>
+  <div class="section-title reveal">Research Projects</div>
+  <div class="projects-grid">
+
+    <!-- P1 -->
+    <div class="proj-card reveal">
+      <div class="proj-accent pa-teal"></div>
+      <a class="proj-link" href="https://github.com/shahdivya-lab/ecg-guard" target="_blank">
+        GitHub ↗
+      </a>
+      <div class="proj-inner">
+        <div class="proj-num">PROJECT 01 / 03</div>
+        <div class="proj-title">ECG-Guard</div>
+        <div class="proj-sub">// Cardiac anomaly detection with uncertainty-aware refusal</div>
+        <div class="proj-desc">
+          A 1D-CNN + Transformer hybrid trained on 21,799 PTB-XL ECG records to classify
+          5 cardiac conditions. The key alignment feature: the model refuses to predict when
+          confidence drops below a clinical threshold — it knows when not to answer.
+          Reduces false-positive alerts by 23% under ICU noise conditions.
+        </div>
+        <div class="proj-tags">
+          <span class="tag tg">PyTorch</span>
+          <span class="tag tg">1D-CNN</span>
+          <span class="tag tg">Transformer</span>
+          <span class="tag tb">Monte Carlo Dropout</span>
+          <span class="tag tb">PTB-XL Dataset</span>
+          <span class="tag tr">Uncertainty QA</span>
+        </div>
+        <div class="proj-metrics">
+          <div class="pm"><div class="pm-val">96.1%</div><div class="pm-label">NORMAL SR ACC.</div></div>
+          <div class="pm"><div class="pm-val">91.4%</div><div class="pm-label">AFIB ACC.</div></div>
+          <div class="pm"><div class="pm-val">23%</div><div class="pm-label">FALSE POS. REDUCTION</div></div>
+          <div class="pm"><div class="pm-val">5</div><div class="pm-label">CONDITIONS</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- P2 -->
+    <div class="proj-card reveal">
+      <div class="proj-accent pa-blue"></div>
+      <a class="proj-link" href="https://github.com/shahdivya-lab/medsafe-llm" target="_blank">
+        GitHub ↗
+      </a>
+      <div class="proj-inner">
+        <div class="proj-num">PROJECT 02 / 03</div>
+        <div class="proj-title">MedSafe-LLM</div>
+        <div class="proj-sub">// Constitutional AI alignment for clinical Q&amp;A</div>
+        <div class="proj-desc">
+          Fine-tuned Phi-3 Mini (3.8B) using Direct Preference Optimization (DPO) with
+          HuggingFace TRL on 4,200 medical preference pairs. Implements Constitutional AI —
+          the model refuses to diagnose, defers to professionals, and blocks jailbreaks.
+          Demonstrates alignment without sacrificing capability.
+        </div>
+        <div class="proj-tags">
+          <span class="tag tb">DPO</span>
+          <span class="tag tb">Constitutional AI</span>
+          <span class="tag tb">HuggingFace TRL</span>
+          <span class="tag tg">LoRA / PEFT</span>
+          <span class="tag tg">Phi-3 Mini 3.8B</span>
+          <span class="tag tr">Red-Teaming</span>
+        </div>
+        <div class="proj-metrics">
+          <div class="pm"><div class="pm-val">94%</div><div class="pm-label">SAFETY RATE</div></div>
+          <div class="pm"><div class="pm-val">91%</div><div class="pm-label">REFUSAL ACC.</div></div>
+          <div class="pm"><div class="pm-val">87%</div><div class="pm-label">MedQA F1</div></div>
+          <div class="pm"><div class="pm-val">0.12</div><div class="pm-label">ALIGN. TAX</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- P3 -->
+    <div class="proj-card reveal">
+      <div class="proj-accent pa-red"></div>
+      <a class="proj-link" href="https://github.com/shahdivya-lab/scanformer" target="_blank">
+        GitHub ↗
+      </a>
+      <div class="proj-inner">
+        <div class="proj-num">PROJECT 03 / 03</div>
+        <div class="proj-title">ScanFormer</div>
+        <div class="proj-sub">// Multimodal VLM for radiology report generation</div>
+        <div class="proj-desc">
+          LoRA fine-tuned LLaVA-Med on 224,316 CheXpert chest X-rays to auto-generate
+          structured radiology reports. Uses EWC (Elastic Weight Consolidation) to
+          prevent catastrophic forgetting — retaining 96.2% of general language capability
+          while specialising for radiology. Hallucination rate reduced to 4.1%.
+        </div>
+        <div class="proj-tags">
+          <span class="tag tr">Multimodal VLM</span>
+          <span class="tag tr">LLaVA-Med</span>
+          <span class="tag tg">LoRA · PEFT</span>
+          <span class="tag tg">EWC</span>
+          <span class="tag tb">CheXpert 224K</span>
+          <span class="tag tb">Gradio</span>
+        </div>
+        <div class="proj-metrics">
+          <div class="pm"><div class="pm-val">38.4</div><div class="pm-label">BLEU-4</div></div>
+          <div class="pm"><div class="pm-val">89.7%</div><div class="pm-label">FACTUALITY</div></div>
+          <div class="pm"><div class="pm-val">96.2%</div><div class="pm-label">LANG. RETENTION</div></div>
+          <div class="pm"><div class="pm-val">4.1%</div><div class="pm-label">HALLUCINATION</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div class="section-wrap" id="skills">
+  <div class="section-label">03 — SKILLS</div>
+  <div class="section-title reveal">Technical Stack</div>
+  <div class="skills-grid reveal">
+    <div class="skill-card">
+      <div class="skill-category">PROGRAMMING LANGUAGES</div>
+      <div class="skill-pills">
+        <span class="skill-pill">Python</span>
+        <span class="skill-pill">C++</span>
+        <span class="skill-pill">C</span>
+        <span class="skill-pill">HTML</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-category">DEV TOOLS</div>
+      <div class="skill-pills">
+        <span class="skill-pill">Git</span>
+        <span class="skill-pill">GitHub</span>
+        <span class="skill-pill">VS Code</span>
+        <span class="skill-pill">Google Colab</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDUCATION -->
+<div class="section-wrap" id="education">
+  <div class="section-label">04 — EDUCATION</div>
+  <div class="section-title reveal">Academic Background</div>
+  <div class="edu-card reveal">
+    <div class="edu-row header">
+      <div>DEGREE</div>
+      <div>SPECIALIZATION</div>
+      <div>INSTITUTE</div>
+      <div style="text-align:right;">CPI / %</div>
+    </div>
+    <div class="edu-row">
+      <div>
+        <div class="edu-degree">B.Tech</div>
+        <div class="edu-year">2025 – Present</div>
+      </div>
+      <div class="edu-spec">Mechanical Engineering</div>
+      <div class="edu-inst">IIT Gandhinagar</div>
+      <div class="edu-cpi">8.0</div>
+    </div>
+    <div class="edu-row">
+      <div>
+        <div class="edu-degree">Class XII</div>
+        <div class="edu-year">2024 – 2025</div>
+      </div>
+      <div class="edu-spec">Maths, Physics, Chemistry</div>
+      <div class="edu-inst">CBSE</div>
+      <div class="edu-cpi">89.0%</div>
+    </div>
+    <div class="edu-row">
+      <div>
+        <div class="edu-degree">Class X</div>
+        <div class="edu-year">2022 – 2023</div>
+      </div>
+      <div class="edu-spec">CBSE</div>
+      <div class="edu-inst">CBSE</div>
+      <div class="edu-cpi">93.4%</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="section-wrap" id="contact">
+  <div class="section-label">05 — CONTACT</div>
+  <div class="section-title reveal">Get In Touch</div>
+  <div class="contact-grid reveal">
+    <a class="contact-card" href="mailto:shah.divya@iitgn.ac.in">
+      <div class="contact-icon">
+        <svg width="18" height="18" fill="none" stroke="#00d4aa" stroke-width="1.5" viewBox="0 0 24 24">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+      </div>
+      <div>
+        <div class="contact-label">EMAIL</div>
+        <div class="contact-val">shah.divya@iitgn.ac.in</div>
+      </div>
+    </a>
+    <a class="contact-card" href="https://github.com/shahdivya-lab" target="_blank">
+      <div class="contact-icon">
+        <svg width="18" height="18" fill="#00d4aa" viewBox="0 0 16 16">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="contact-label">GITHUB</div>
+        <div class="contact-val">shahdivya-lab</div>
+      </div>
+    </a>
+    <a class="contact-card" href="https://www.linkedin.com/in/divya-shah-51112036a/" target="_blank">
+      <div class="contact-icon">
+        <svg width="18" height="18" fill="#00d4aa" viewBox="0 0 24 24">
+          <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
+          <circle cx="4" cy="4" r="2"/>
+        </svg>
+      </div>
+      <div>
+        <div class="contact-label">LINKEDIN</div>
+        <div class="contact-val">divya-shah-51112036a</div>
+      </div>
+    </a>
+    <a class="contact-card" href="https://github.com/shahdivya-lab" target="_blank">
+      <div class="contact-icon">
+        <svg width="18" height="18" fill="none" stroke="#00d4aa" stroke-width="1.5" viewBox="0 0 24 24">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+      </div>
+      <div>
+        <div class="contact-label">INSTITUTE</div>
+        <div class="contact-val">IIT Gandhinagar</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<footer>
+  DIVYA RAHUL SHAH · IIT GANDHINAGAR · 2025 &nbsp;—&nbsp; BUILT WITH HTML &amp; HOSTED ON GITHUB PAGES
+</footer>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx - 4}px, ${my - 4}px)`;
+});
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate(${rx - 16}px, ${ry - 16}px)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.querySelectorAll('a,button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    ring.style.width = '48px'; ring.style.height = '48px';
+    ring.style.borderColor = 'rgba(0,212,170,0.6)';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.width = '32px'; ring.style.height = '32px';
+    ring.style.borderColor = 'rgba(0,212,170,0.4)';
+  });
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
